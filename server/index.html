@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light Controller</title>
+    <style>
+        :root {
+            --bg: #0f1117;
+            --card: #1a1d27;
+            --border: #2a2d3a;
+            --text: #e2e8f0;
+            --muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            max-width: 920px;
+            margin: 0 auto 20px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity .15s, transform .1s;
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        button:hover {
+            opacity: 0.82;
+        }
+
+        .btn-on {
+            background: #f59e0b;
+            color: #000;
+        }
+
+        .btn-off {
+            background: #374151;
+            color: var(--text);
+        }
+
+        .btn-dim {
+            background: #1f2937;
+            color: #94a3b8;
+        }
+
+        .btn-blue {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        .btn-pink {
+            background: #ec4899;
+            color: #fff;
+        }
+
+        .btn-green {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        input[type=number] {
+            width: 58px;
+            padding: 8px;
+            background: #111827;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.84rem;
+            text-align: center;
+        }
+
+        .log-card {
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        .log-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        #log {
+            background: #0a0c14;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            max-height: 190px;
+            overflow-y: auto;
+        }
+
+        .lr {
+            padding: 3px 0;
+            border-bottom: 1px solid #1a1d27;
+        }
+
+        .lr:last-child {
+            border-bottom: none;
+        }
+
+        .lc {
+            color: #64748b;
+        }
+
+        .lo {
+            color: #4ade80;
+        }
+
+        .le {
+            color: #f87171;
+        }
+
+        .li {
+            color: #475569;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Light Controller</h1>
+        <p>Raspberry Pi 4 — device control panel</p>
+    </header>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dot" style="background:#f59e0b"></div>
+                <span class="card-title">LED</span>
+            </div>
+            <div class="btn-group">
+                <button class="btn-on" onclick="cmd('LED ON')">ON</button>
+                <button class="btn-off" onclick="cmd('LED OFF')">OFF</button>
+                <button class="btn-dim" onclick="cmd('LED BRIGHT 0')">LOW</button>
+                <button class="btn-dim" onclick="cmd('LED BRIGHT 1')">MID</button>
+                <button class="btn-dim" onclick="cmd('LED BRIGHT 2')">HIGH</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dot" style="background:#ec4899"></div>
+                <span class="card-title">Buzzer</span>
+            </div>
+            <div class="btn-group">
+                <button class="btn-pink" onclick="buzzerOn()">Play song</button>
+                <button class="btn-off" onclick="cmd('BUZZER OFF')">Stop</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dot" style="background:#60a5fa"></div>
+                <span class="card-title">7-Segment</span>
+            </div>
+            <div class="input-row">
+                <input type="number" id="sd" min="0" max="9" value="0">
+                <button class="btn-blue"
+                    onclick="cmd('SEG DISPLAY '+document.getElementById('sd').value)">Display</button>
+                <button class="btn-off" onclick="cmd('SEG CLEAR')">Clear</button>
+            </div>
+            <div class="input-row">
+                <input type="number" id="sc" min="0" max="9" value="5">
+                <button class="btn-blue"
+                    onclick="cmd('SEG COUNTDOWN '+document.getElementById('sc').value)">Countdown</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="dot" style="background:#34d399"></div>
+                <span class="card-title">Light Sensor</span>
+            </div>
+            <div class="btn-group">
+                <button class="btn-green" onclick="cmd('CDS READ')">Read</button>
+                <button class="btn-off" onclick="cmd('CDS AUTO')">Auto LED</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card log-card">
+        <div class="log-title">Response log</div>
+        <div id="log">
+            <div class="lr li">Waiting for commands...</div>
+        </div>
+    </div>
+
+    <script>
+        async function cmd(command) {
+            log('> ' + command, 'c');
+            try {
+                const r = await fetch('/command', { method: 'POST', body: command });
+                const t = await r.text();
+                log(t.trim(), t.startsWith('200') ? 'o' : 'e');
+            } catch (e) { log('Error: ' + e.message, 'e'); }
+        }
+
+        function buzzerOn() {
+            log('> BUZZER ON', 'c');
+            fetch('/command', { method: 'POST', body: 'BUZZER ON' })
+                .then(r => r.text())
+                .then(t => log(t.trim(), t.startsWith('200') ? 'o' : 'e'))
+                .catch(e => log('Error: ' + e.message, 'e'));
+        }
+        function log(text, cls) {
+            const box = document.getElementById('log');
+            if (box.firstChild && box.firstChild.classList && box.firstChild.classList.contains('li'))
+                box.innerHTML = '';
+            const d = document.createElement('div');
+            d.className = 'lr l' + (cls || 'o');
+            d.textContent = text;
+            box.insertBefore(d, box.firstChild);
+            if (box.children.length > 40) box.removeChild(box.lastChild);
+        }
+
+        window.addEventListener('beforeunload', function () {
+            navigator.sendBeacon('/disconnect');
+        });
+    </script>
+</body>
+
+</html>

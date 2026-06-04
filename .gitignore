@@ -1,0 +1,15 @@
+# Build artifacts
+*.o
+*.so
+server/server
+client/client
+client/client1
+client/client2
+libcontrol/main
+
+# Logs
+*.log
+
+# Editor files
+.vscode/
+*.swp
